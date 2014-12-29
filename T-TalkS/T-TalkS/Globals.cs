@@ -17,7 +17,21 @@ namespace T_TalkS
         //read from config file and initialize
         public static void initialize()
         {
-            string configPath = "../../settings.config";
+            string configPath = @"../../settings.config";
+
+            if (!File.Exists(configPath))
+            {
+                string[] lines = {
+                                     "#T-Talk settings (Server)",
+                                     "",
+                                     "# 0 < port_number < 65535",
+                                     "port_number=8000"
+                                 };
+                File.WriteAllLines(configPath, lines);
+                Console.WriteLine("Config file created");
+                Environment.Exit(0);
+            }
+
             StreamReader reader = new StreamReader(configPath);
 
             string line = "";

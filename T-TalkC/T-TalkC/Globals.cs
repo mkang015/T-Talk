@@ -16,7 +16,7 @@ namespace T_TalkC
 
         //global functions
         //read from config file and initialize
-        public static bool initialize()
+        public static void initialize()
         {
             string configPath = @"../../settings.config";
             
@@ -59,7 +59,6 @@ namespace T_TalkC
                 // add more parameters in future
             }
             reader.Close();
-            return true;
         }
 
         //checks to see if the port number given in config file is available
