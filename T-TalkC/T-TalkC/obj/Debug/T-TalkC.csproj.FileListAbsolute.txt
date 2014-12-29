@@ -1,0 +1,6 @@
+C:\Users\Min Kang\Documents\GitHub\T-Talk\T-TalkC\T-TalkC\bin\Debug\T-TalkC.exe.config
+C:\Users\Min Kang\Documents\GitHub\T-Talk\T-TalkC\T-TalkC\bin\Debug\T-TalkC.exe
+C:\Users\Min Kang\Documents\GitHub\T-Talk\T-TalkC\T-TalkC\bin\Debug\T-TalkC.pdb
+C:\Users\Min Kang\Documents\GitHub\T-Talk\T-TalkC\T-TalkC\obj\Debug\T-TalkC.exe
+C:\Users\Min Kang\Documents\GitHub\T-Talk\T-TalkC\T-TalkC\obj\Debug\T-TalkC.pdb
+C:\Users\Min Kang\Documents\GitHub\T-Talk\T-TalkC\T-TalkC\obj\Debug\T-TalkC.csprojResolveAssemblyReference.cache
