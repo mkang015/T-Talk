@@ -1,3 +1,11 @@
+# For compiled binaries
+*.suo
+*/bin
+*/obj
+
+# Settings
+*.config
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
