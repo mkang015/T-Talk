@@ -1,7 +1,7 @@
 # For compiled binaries
 *.suo
-*/bin
-*/obj
+**/bin
+**/obj
 
 # Settings
 *.config
