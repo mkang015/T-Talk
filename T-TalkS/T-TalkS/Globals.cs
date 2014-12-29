@@ -52,6 +52,7 @@ namespace T_TalkS
                 //else if(
                 // add more parameters in future
             }
+            reader.Close();
         }
 
         //checks to see if the port number given in config file is available
