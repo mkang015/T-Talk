@@ -13,16 +13,16 @@ namespace T_TalkC
         static void Main(string[] args)
         {
             Console.WriteLine("T-Talk (v.1.0.0) \n");
-            //Globals.initialize();
+            Globals.initialize();
 
             //string hostName = Dns.GetHostName();
             //Console.WriteLine(hostName);
             TcpClient sock = new TcpClient();
             Console.WriteLine("Connecting...");
 
-            sock.Connect("min", 8000);
+            sock.Connect(Globals.hostname, Globals.port);
             Console.WriteLine("Connected");
-            NetworkStream serverStream = default(NetworkStream);
+            //NetworkStream serverStream = default(NetworkStream);
 
 
 

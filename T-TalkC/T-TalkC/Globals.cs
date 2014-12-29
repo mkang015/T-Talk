@@ -11,13 +11,31 @@ namespace T_TalkC
     class Globals
     {
         //global variables
+        public static string hostname;
         public static int port;
 
         //global functions
         //read from config file and initialize
-        public static void initialize()
+        public static bool initialize()
         {
-            string configPath = "../../settings.config";
+            string configPath = @"../../settings.config";
+            
+            if (!File.Exists(configPath))
+            {
+                string[] lines = {
+                                     "#T-Talk settings (Client)",
+                                     "",
+                                     "# 0 < port_number < 65535",
+                                     "port_number=8000",
+                                     "",
+                                     "#Host name or ip address of the server",
+                                     "ip_address="
+                                 };
+                File.WriteAllLines(configPath, lines);
+                Console.WriteLine("Config file created\nPlease set the host's address");
+                Environment.Exit(0);
+            }
+            
             StreamReader reader = new StreamReader(configPath);
 
             string line = "";
@@ -35,9 +53,13 @@ namespace T_TalkC
                         Console.ReadLine();
                         Environment.Exit(1); //terminate
                     }
+                else if (lineSplit[0] == "ip_address")
+                    Globals.hostname = lineSplit[1];
                 //else if(
                 // add more parameters in future
             }
+            reader.Close();
+            return true;
         }
 
         //checks to see if the port number given in config file is available
