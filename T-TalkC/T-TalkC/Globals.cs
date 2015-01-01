@@ -5,15 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 
 namespace T_TalkC
 {
     class Globals
     {
         //global variables
-        public static string hostname;
+        public static string ip;
         public static int port;
+        public static Stream stream;
+        public static TcpClient sock = new TcpClient();
 
+        #region Initialization
         //global functions
         //read from config file and initialize
         public static void initialize()
@@ -26,13 +30,15 @@ namespace T_TalkC
                                      "#T-Talk settings (Client)",
                                      "",
                                      "# 0 < port_number < 65535",
-                                     "port_number=8000",
+                                     "port_number=60000",
                                      "",
                                      "#Host name or ip address of the server",
                                      "ip_address="
                                  };
                 File.WriteAllLines(configPath, lines);
                 Console.WriteLine("Config file created\nPlease set the host's address");
+                Console.WriteLine("Press Enter to terminate");
+                Console.ReadLine();
                 Environment.Exit(0);
             }
             
@@ -54,7 +60,7 @@ namespace T_TalkC
                         Environment.Exit(1); //terminate
                     }
                 else if (lineSplit[0] == "ip_address")
-                    Globals.hostname = lineSplit[1];
+                    Globals.ip = lineSplit[1];
                 //else if(
                 // add more parameters in future
             }
@@ -70,5 +76,105 @@ namespace T_TalkC
 
             return port > IPEndPoint.MinPort && port < IPEndPoint.MaxPort;
         }
+        #endregion
+
+        #region Startup Menu
+        //run startup menu
+        public static void startMenu()
+        {
+            while (true)
+            {
+                printStartMenu();
+                string choice = Console.ReadLine();
+                if (isValidChoice(choice))
+                {
+                    choice = choice.ToLower();
+                    if (choice == "c")
+                        createChat();
+                    else if (choice == "j")
+                        joinChat();
+                    else //quit
+                        System.Environment.Exit(0);
+                }
+                else
+                    Console.WriteLine("\n Invalid choice. Please try again.");
+            }
+        }
+
+        //print startup menu
+        static void printStartMenu()
+        {
+            Console.WriteLine("\nMenu");
+            Console.WriteLine("  Create a chat room (c)");
+            Console.WriteLine("  Join a chat room (j)");
+            Console.WriteLine("  Quit (q)");
+        }
+
+        //checks if the choice is valid
+        static bool isValidChoice(string c)
+        {
+            if (c.Length != 1)
+                return false;
+
+            c = c.ToLower(); //make it lower
+            if (c == "c" || c == "j" || c == "q")
+                return true;
+            else
+                return false;
+        }
+        #endregion
+
+        #region Chat
+        //creates chat room in server with specific room name and password
+        // send header message to server "cChat"
+        static void createChat()
+        {
+            //public chat room
+
+            //private chat room
+        }
+
+        //tries to join a chat room in server with specific room name and password
+        // send header message to server "jChat"
+        static void joinChat()
+        {
+            send("jChat");
+
+            Console.WriteLine("\nJoin");
+            Console.WriteLine("   Chatroom type (public or private): ");
+            string c = Console.ReadLine().ToLower();
+
+            if (c == "public") //public chat room
+            {
+
+            }
+            else if (c == "private")//private chat room
+            {
+
+            }
+        }
+        #endregion
+
+        #region Message Transmission
+        static void send(string m)
+        {
+            ASCIIEncoding asciiEncoding = new ASCIIEncoding();
+            byte[] sendBuf = asciiEncoding.GetBytes(m);
+
+            stream.Write(sendBuf, 0, sendBuf.Length);
+        }
+
+        static string receive()
+        {
+            byte[] message = new byte[100];
+            int mSize = stream.Read(message, 0, 100);
+
+            string m = "";
+            for (int i = 0; i < mSize; ++i)
+                m += Convert.ToChar(message[i]);
+
+            return m;
+        }
+        #endregion
     }
 }

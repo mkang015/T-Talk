@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 
 namespace T_TalkS
 {
@@ -13,6 +14,7 @@ namespace T_TalkS
         //global variables
         public static int port;
 
+        #region Initialization
         //global functions
         //read from config file and initialize
         public static void initialize()
@@ -25,10 +27,12 @@ namespace T_TalkS
                                      "#T-Talk settings (Server)",
                                      "",
                                      "# 0 < port_number < 65535",
-                                     "port_number=8000"
+                                     "port_number=60000"
                                  };
                 File.WriteAllLines(configPath, lines);
                 Console.WriteLine("Config file created");
+                Console.WriteLine("Press enter to terminate");
+                Console.ReadLine();
                 Environment.Exit(0);
             }
 
@@ -64,5 +68,28 @@ namespace T_TalkS
 
             return port > IPEndPoint.MinPort && port < IPEndPoint.MaxPort;
         }
+        #endregion
+
+        #region Message Transmission
+        public static void send(Socket sock, string m)
+        {
+            ASCIIEncoding asciiEncoding = new ASCIIEncoding();
+            byte[] sendBuf = asciiEncoding.GetBytes(m);
+
+            //stream.Write(sendBuf, 0, sendBuf.Length);
+        }
+
+        public static string receive(Socket sock)
+        {
+            byte[] message = new byte[100];
+            int mSize = sock.Receive(message);
+
+            string m = "";
+            for (int i = 0; i < mSize; ++i)
+                m += Convert.ToChar(message[i]);
+
+            return m;
+        }
+        #endregion
     }
 }

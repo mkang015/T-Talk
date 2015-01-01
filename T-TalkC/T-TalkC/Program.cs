@@ -15,14 +15,16 @@ namespace T_TalkC
             Console.WriteLine("T-Talk (v.1.0.0) \n");
             Globals.initialize();
 
-            //string hostName = Dns.GetHostName();
-            //Console.WriteLine(hostName);
-            TcpClient sock = new TcpClient();
             Console.WriteLine("Connecting...");
 
-            sock.Connect(Globals.hostname, Globals.port);
+            Globals.sock.Connect(IPAddress.Parse(Globals.ip), Globals.port);
             Console.WriteLine("Connected");
-            //NetworkStream serverStream = default(NetworkStream);
+
+            //save the stream
+            Globals.stream = Globals.sock.GetStream();
+
+            //run start Menu
+            Globals.startMenu();
 
 
 
@@ -30,7 +32,7 @@ namespace T_TalkC
             Console.ReadLine();
 
             //close the socket
-            sock.Close();
+            Globals.sock.Close();
         }
     }
 }

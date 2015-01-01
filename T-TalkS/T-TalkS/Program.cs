@@ -26,6 +26,10 @@ namespace T_TalkS
 
                 Console.WriteLine("accepted");
 
+                //receive header
+                string header = Globals.receive(sock);
+
+                Console.WriteLine(header);
                 Console.ReadLine();
 
                 //close the socket
