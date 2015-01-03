@@ -15,10 +15,10 @@ namespace T_TalkC
             Console.WriteLine("T-Talk (v.1.0.0) \n");
             Globals.initialize();
 
-            Console.WriteLine("Connecting...");
+            Console.WriteLine("Connecting...\n");
 
             Globals.sock.Connect(IPAddress.Parse(Globals.ip), Globals.port);
-            Console.WriteLine("Connected");
+            Console.WriteLine("Client connected");
 
             //save the stream
             Globals.stream = Globals.sock.GetStream();

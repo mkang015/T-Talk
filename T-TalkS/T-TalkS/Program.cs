@@ -16,7 +16,7 @@ namespace T_TalkS
             Console.WriteLine("T-Talk (v.1.0.0) \n");
             Globals.initialize();
 
-            TcpListener listener = new TcpListener(IPAddress.IPv6Any, Globals.port);
+            TcpListener listener = new TcpListener(IPAddress.Any, Globals.port);
             listener.Start();
 
             while(true)
@@ -26,11 +26,25 @@ namespace T_TalkS
 
                 Console.WriteLine("accepted");
 
-                //receive header
-                string header = Globals.receive(sock);
+                //if any sort of socket exception is caught, let go and accept another one.
+                try
+                {
+                    //receive header
+                    string header = Globals.receive(sock);
 
-                Console.WriteLine(header);
-                Console.ReadLine();
+                    if (header == "cChat") //Create a chat room
+                        Globals.createChat();
+                    else //Join a chat room
+                        Globals.joinChat();
+
+                    Console.WriteLine(header);
+                    Console.ReadLine();
+                }
+                catch(SocketException ex)
+                {
+                    Console.WriteLine("Client disconnected.\n");
+                    continue;
+                }
 
                 //close the socket
                 sock.Close();

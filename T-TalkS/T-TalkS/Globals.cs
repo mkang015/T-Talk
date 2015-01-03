@@ -91,5 +91,17 @@ namespace T_TalkS
             return m;
         }
         #endregion
+
+        #region Client Dealers
+        //create a chat room
+        public static void createChat()
+        {
+        }
+
+        //joins a chat room
+        public static void joinChat()
+        {
+        }
+        #endregion
     }
 }
