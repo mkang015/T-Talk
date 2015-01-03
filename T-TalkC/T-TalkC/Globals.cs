@@ -82,28 +82,26 @@ namespace T_TalkC
         //run startup menu
         public static void startMenu()
         {
-            while (true)
+            printStartMenu();
+            string choice = Console.ReadLine();
+            if (isValidChoice(choice))
             {
-                printStartMenu();
-                string choice = Console.ReadLine();
-                if (isValidChoice(choice))
-                {
-                    choice = choice.ToLower();
-                    if (choice == "c")
-                        createChat();
-                    else if (choice == "j")
-                        joinChat();
-                    else //quit
-                        System.Environment.Exit(0);
-                }
-                else
-                    Console.WriteLine("\n Invalid choice. Please try again.");
+                choice = choice.ToLower();
+                if (choice == "c")
+                    createChat();
+                else if (choice == "j")
+                    joinChat();
+                else //quit
+                    System.Environment.Exit(0);
             }
+            else
+                Console.WriteLine("\n Invalid choice. Please try again.");
         }
 
         //print startup menu
         static void printStartMenu()
         {
+            Console.Clear();
             Console.WriteLine("\nMenu");
             Console.WriteLine("  Create a chat room (c)");
             Console.WriteLine("  Join a chat room (j)");
@@ -129,9 +127,29 @@ namespace T_TalkC
         // send header message to server "cChat"
         static void createChat()
         {
-            //public chat room
+            send("cChat");
 
-            //private chat room
+            Console.WriteLine("\nCreate");
+            Console.WriteLine("   Chatroom type (public or private): ");
+            string c = Console.ReadLine().ToLower();
+
+            Console.WriteLine("\nCreating " + c + " chat");
+            Console.WriteLine("   Chatroom name: ");
+            string roomName = Console.ReadLine();
+            string password = "";
+
+            if (c == "public") //public chat room
+            {
+
+
+            }
+            else if (c == "private") //private chat room
+            {
+                Console.WriteLine("   Chatroom password: ");
+                password = Console.ReadLine();
+
+            }
+            Console.WriteLine(roomName + " is created and available");
         }
 
         //tries to join a chat room in server with specific room name and password
@@ -144,14 +162,37 @@ namespace T_TalkC
             Console.WriteLine("   Chatroom type (public or private): ");
             string c = Console.ReadLine().ToLower();
 
-            if (c == "public") //public chat room
-            {
+            Console.WriteLine("\nJoing " + c + " chat");
+            Console.WriteLine("   Chatroom name: ");
+            string roomName = Console.ReadLine();
 
-            }
-            else if (c == "private")//private chat room
+            if (!roomExists(roomName)) //communicate with server to check for availability 
             {
-
+                Console.WriteLine(roomName + " does not exist");
+                Console.WriteLine("Press enter to go back to main menu");
+                Console.ReadLine();
+                return;
             }
+            else //room found
+            {
+                if (c == "public") //public chat room
+                {
+
+                }
+                else if (c == "private")//private chat room
+                {
+
+                }
+            }
+        }
+
+        //communicate with server to check for availability of a room
+        // (note: keep track of availability in server side to replace status check message transfer)
+        static bool roomExists(string roomName)
+        {
+
+
+            return true;
         }
         #endregion
 

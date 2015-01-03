@@ -24,7 +24,10 @@ namespace T_TalkC
             Globals.stream = Globals.sock.GetStream();
 
             //run start Menu
-            Globals.startMenu();
+            while (true)
+            {
+                Globals.startMenu();
+            }
 
 
 
