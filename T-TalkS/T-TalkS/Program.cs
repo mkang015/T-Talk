@@ -29,16 +29,16 @@ namespace T_TalkS
                 //if any sort of socket exception is caught, let go and accept another one.
                 try
                 {
-                    //receive header
-                    string header = Globals.receive(sock);
+                    while (true)
+                    {
+                        //receive header
+                        string header = Globals.receive(sock);
 
-                    if (header == "cChat") //Create a chat room
-                        Globals.createChat();
-                    else //Join a chat room
-                        Globals.joinChat();
-
-                    Console.WriteLine(header);
-                    Console.ReadLine();
+                        if (header == "cChat") //Create a chat room
+                            Globals.createChat(sock);
+                        else //Join a chat room
+                            Globals.joinChat(sock);
+                    }
                 }
                 catch(SocketException ex)
                 {

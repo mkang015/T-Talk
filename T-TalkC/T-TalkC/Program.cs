@@ -12,7 +12,6 @@ namespace T_TalkC
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("T-Talk (v.1.0.0) \n");
             Globals.initialize();
 
             Console.WriteLine("Connecting...\n");
@@ -25,9 +24,7 @@ namespace T_TalkC
 
             //run start Menu
             while (true)
-            {
                 Globals.startMenu();
-            }
 
 
 

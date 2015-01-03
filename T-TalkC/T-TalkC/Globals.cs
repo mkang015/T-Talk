@@ -102,6 +102,7 @@ namespace T_TalkC
         static void printStartMenu()
         {
             Console.Clear();
+            Console.WriteLine("T-Talk (v.1.0.0) \n");
             Console.WriteLine("\nMenu");
             Console.WriteLine("  Create a chat room (c)");
             Console.WriteLine("  Join a chat room (j)");
@@ -162,9 +163,10 @@ namespace T_TalkC
             Console.WriteLine("   Chatroom type (public or private): ");
             string c = Console.ReadLine().ToLower();
 
-            Console.WriteLine("\nJoing " + c + " chat");
-            Console.WriteLine("   Chatroom name: ");
+            Console.WriteLine("\nJoining a " + c + " chat");
+            Console.Write("   Chatroom name: ");
             string roomName = Console.ReadLine();
+            string password = "";
 
             if (!roomExists(roomName)) //communicate with server to check for availability 
             {
@@ -175,13 +177,27 @@ namespace T_TalkC
             }
             else //room found
             {
-                if (c == "public") //public chat room
+                if (c == "private")//private chat room
                 {
+                    while(true)
+                    {
+                        Console.WriteLine("   Chatroom password: ");
+                        password = Console.ReadLine();
 
-                }
-                else if (c == "private")//private chat room
-                {
-
+                        send(password);
+                        bool matched = bool.Parse(receive());
+                        if (matched)
+                            break;
+                        else
+                        {
+                            Console.WriteLine("\n   Invalid password. quit (q) or try again(t): ");
+                            string choice = Console.ReadLine();
+                            if (choice.ToLower() == "q")
+                                return;
+                        }
+                    }
+                    Console.Clear();
+                    loadChatRoom(roomName);
                 }
             }
         }
@@ -190,9 +206,15 @@ namespace T_TalkC
         // (note: keep track of availability in server side to replace status check message transfer)
         static bool roomExists(string roomName)
         {
+            send(roomName);
+            string availability = receive();
+            return bool.Parse(availability);
+        }
 
-
-            return true;
+        //loads messages to console
+        static void loadChatRoom(string roomName)
+        {
+            Console.WriteLine("loaded " + roomName);
         }
         #endregion
 

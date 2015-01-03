@@ -13,6 +13,7 @@ namespace T_TalkS
     {
         //global variables
         public static int port;
+        public static Dictionary<string, Room> Rooms = new Dictionary<string, Room>();
 
         #region Initialization
         //global functions
@@ -37,7 +38,6 @@ namespace T_TalkS
             }
 
             StreamReader reader = new StreamReader(configPath);
-
             string line = "";
             while ((line = reader.ReadLine()) != null)
             {
@@ -57,6 +57,8 @@ namespace T_TalkS
                 // add more parameters in future
             }
             reader.Close();
+
+            loadRI(); //load room infos
         }
 
         //checks to see if the port number given in config file is available
@@ -68,6 +70,35 @@ namespace T_TalkS
 
             return port > IPEndPoint.MinPort && port < IPEndPoint.MaxPort;
         }
+
+        //load all the rooms' information
+        static void loadRI()
+        {
+            string riPath = "Data/roomInfo.ri";
+            if(!Directory.Exists("Data")) //if it doesn't exists, create one and create rooomInfo.ri
+            {
+                Directory.CreateDirectory("Data");
+                File.Create(riPath);
+                return;
+            }
+
+            StreamReader reader = new StreamReader(riPath);
+            string line = "";
+            string rn = "", rt = "", rp = "";
+            while ((line = reader.ReadLine()) != null)
+            {
+                string[] lineSplit = line.Split('=');
+                if (lineSplit[0] == "roomName")
+                    rn = lineSplit[1];
+                else if (lineSplit[0] == "roomType")
+                    rt = lineSplit[1];
+                else if (lineSplit[0] == "password")
+                    rp = lineSplit[1];
+
+                if(line.Length > 0 && line[0] == '-') //add a room
+                    Rooms.Add(rn, new Room(rn, rt, rp));
+            }
+        }
         #endregion
 
         #region Message Transmission
@@ -76,7 +107,7 @@ namespace T_TalkS
             ASCIIEncoding asciiEncoding = new ASCIIEncoding();
             byte[] sendBuf = asciiEncoding.GetBytes(m);
 
-            //stream.Write(sendBuf, 0, sendBuf.Length);
+            sock.Send(sendBuf);
         }
 
         public static string receive(Socket sock)
@@ -94,14 +125,47 @@ namespace T_TalkS
 
         #region Client Dealers
         //create a chat room
-        public static void createChat()
+        public static void createChat(Socket sock)
         {
         }
 
         //joins a chat room
-        public static void joinChat()
+        public static void joinChat(Socket sock)
         {
+            //begin roomExists
+            string rroomName = receive(sock);
+            bool availability = Rooms.ContainsKey(rroomName);
+            send(sock, availability.ToString());
+            //end roomExists
+
+            if (!availability)
+                return;
+
+            Room foundRoom = Rooms[rroomName]; //get the room object
+            if (foundRoom.roomType == "private")
+            {
+                while (true)
+                {
+                    string rPassword = foundRoom.roomType == "public" ? "" : receive(sock);
+                    bool passwordMatched = rPassword == foundRoom.password;
+                    send(sock, passwordMatched.ToString());
+
+                    if (passwordMatched)
+                        break;
+                    else
+                    {
+                        string response = receive(sock);
+                        if (response == "q") //quit
+                            return;
+                        //else "t": let it iterate in while loop
+                    }
+                }
+            }
+
+            Console.WriteLine("\n" + rroomName);
         }
+
+        //
         #endregion
     }
 }
