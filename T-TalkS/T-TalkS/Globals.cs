@@ -134,7 +134,8 @@ namespace T_TalkS
         {
             //begin roomExists
             string rroomName = receive(sock);
-            bool availability = Rooms.ContainsKey(rroomName);
+            string rroomType = receive(sock);
+            bool availability = Rooms.ContainsKey(rroomName) && Rooms[rroomName].roomType == rroomType;
             send(sock, availability.ToString());
             //end roomExists
 
@@ -146,7 +147,7 @@ namespace T_TalkS
             {
                 while (true)
                 {
-                    string rPassword = foundRoom.roomType == "public" ? "" : receive(sock);
+                    string rPassword = receive(sock);
                     bool passwordMatched = rPassword == foundRoom.password;
                     send(sock, passwordMatched.ToString());
 

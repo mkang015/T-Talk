@@ -161,27 +161,27 @@ namespace T_TalkC
 
             Console.WriteLine("\nJoin");
             Console.WriteLine("   Chatroom type (public or private): ");
-            string c = Console.ReadLine().ToLower();
+            string roomType = Console.ReadLine().ToLower();
 
-            Console.WriteLine("\nJoining a " + c + " chat");
+            Console.WriteLine("\nJoining a chat room");
             Console.Write("   Chatroom name: ");
             string roomName = Console.ReadLine();
             string password = "";
 
-            if (!roomExists(roomName)) //communicate with server to check for availability 
+            if (!roomExists(roomName, roomType)) //communicate with server to check for availability 
             {
-                Console.WriteLine(roomName + " does not exist");
+                Console.WriteLine("\nA " + roomType + " \"" + roomName + "\" does not exist");
                 Console.WriteLine("Press enter to go back to main menu");
                 Console.ReadLine();
                 return;
             }
             else //room found
             {
-                if (c == "private")//private chat room
+                if (roomType == "private")//private chat room
                 {
                     while(true)
                     {
-                        Console.WriteLine("   Chatroom password: ");
+                        Console.Write("   Chatroom password: ");
                         password = Console.ReadLine();
 
                         send(password);
@@ -204,9 +204,10 @@ namespace T_TalkC
 
         //communicate with server to check for availability of a room
         // (note: keep track of availability in server side to replace status check message transfer)
-        static bool roomExists(string roomName)
+        static bool roomExists(string roomName, string roomType)
         {
             send(roomName);
+            send(roomType);
             string availability = receive();
             return bool.Parse(availability);
         }
