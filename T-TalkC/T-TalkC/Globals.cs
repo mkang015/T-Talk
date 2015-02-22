@@ -128,7 +128,7 @@ namespace T_TalkC
         // send header message to server "cChat"
         static void createChat()
         {
-            send("cChat");
+            send("cChat"); //header -> server's main
 
             Console.WriteLine("\nCreate");
             Console.WriteLine("   Chatroom type (public or private): ");
@@ -157,7 +157,7 @@ namespace T_TalkC
         // send header message to server "jChat"
         static void joinChat()
         {
-            send("jChat");
+            send("jChat"); //header -> server's main
 
             Console.WriteLine("\nJoin");
             Console.WriteLine("   Chatroom type (public or private): ");
@@ -186,12 +186,13 @@ namespace T_TalkC
 
                         send(password);
                         bool matched = bool.Parse(receive());
-                        if (matched)
+                        if (matched) //password matched status handling
                             break;
                         else
                         {
                             Console.WriteLine("\n   Invalid password. quit (q) or try again(t): ");
                             string choice = Console.ReadLine();
+                            send(choice);
                             if (choice.ToLower() == "q")
                                 return;
                         }
@@ -208,7 +209,7 @@ namespace T_TalkC
         {
             send(roomName);
             send(roomType);
-            string availability = receive();
+            string availability = receive(); //room availability status handling
             return bool.Parse(availability);
         }
 

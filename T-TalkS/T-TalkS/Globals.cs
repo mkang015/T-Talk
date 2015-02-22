@@ -139,7 +139,7 @@ namespace T_TalkS
             send(sock, availability.ToString());
             //end roomExists
 
-            if (!availability)
+            if (!availability) //availability sent above (client will handle accordingly)
                 return;
 
             Room foundRoom = Rooms[rroomName]; //get the room object
@@ -155,12 +155,13 @@ namespace T_TalkS
                         break;
                     else
                     {
-                        string response = receive(sock);
+                        string response = receive(sock); //response to retry
                         if (response == "q") //quit
                             return;
                         //else "t": let it iterate in while loop
                     }
                 }
+                send(sock, "matched");
             }
 
             Console.WriteLine("\n" + rroomName);
